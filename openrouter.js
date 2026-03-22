@@ -1,5 +1,4 @@
-const OPENROUTER_API_KEY = "YOUR_API_KEY"; // 🔑 Replace with your OpenRouter API key
-const MODEL = "stepfun/step-3.5-flash:free";
+const OPENROUTER_API_KEY = "API_KEY"; // 🔑 Replace with your OpenRouter API key
 const SITE_URL = "<YOUR_SITE_URL>";   // Optional
 const SITE_NAME = "Simple Chat Bot";  // Optional
 
@@ -15,9 +14,10 @@ const conversationHistory = [
  * Sends a user message to OpenRouter and returns the AI reply string.
  * Automatically maintains the full conversation history for context.
  * @param {string} userMessage
+ * @param {string} model - The model ID to use for the API call
  * @returns {Promise<string>}
  */
-async function sendToAI(userMessage) {
+async function sendToAI(userMessage, model) {
   // Append user turn to history
   conversationHistory.push({ role: "user", content: userMessage });
 
@@ -30,7 +30,7 @@ async function sendToAI(userMessage) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: MODEL,
+      model: model,
       messages: conversationHistory,
     }),
   });
