@@ -180,7 +180,7 @@
     .bubble-avatar svg { color: var(--bg); }
 
     .bubble {
-      max-width: 80%;
+      max-width: 78%;
       padding: 10px 14px;
       border-radius: 16px;
       font-size: 13.5px;
@@ -435,34 +435,6 @@
 
   let isTyping = false;
 
-  const botReplies = [
-    "That's a great question! Let me think about that... 🤔",
-    "Interesting! Here's what I know about that topic.",
-    "I love that curiosity! Here's a helpful answer for you.",
-    "Sure thing! I'd be happy to help with that. 😊",
-    "Great point! Let me break that down for you.",
-    "Here's something fun: the universe is approximately 13.8 billion years old! 🌌",
-    "Tip: Taking short breaks every 25 minutes can boost focus significantly.",
-    "I'm a simple demo bot, but I'm here to chat! Ask me anything.",
-    "That's a fascinating topic! There's always something new to explore.",
-    "I hear you! Let me respond with something useful. 💬",
-  ];
-
-  function getReply(text) {
-    const t = text.toLowerCase();
-    if (t.includes('hello') || t.includes('hi') || t.includes('hey'))
-      return "Hey there! 👋 Great to meet you. What can I help you with today?";
-    if (t.includes('tip') || t.includes('advice'))
-      return "💡 Pro tip: Drink a glass of water before checking your phone every morning. Small habits compound over time!";
-    if (t.includes('fact') || t.includes('random'))
-      return "🎲 Random fact: Honey never expires. Archaeologists found 3,000-year-old honey in Egyptian tombs — still perfectly edible!";
-    if (t.includes('thank'))
-      return "You're very welcome! 😊 Is there anything else I can help you with?";
-    if (t.includes('bye') || t.includes('goodbye'))
-      return "Goodbye! 👋 Come back anytime — I'll be right here.";
-    return botReplies[Math.floor(Math.random() * botReplies.length)];
-  }
-
   function now() {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
@@ -525,9 +497,10 @@
     if (r) r.remove();
   }
 
-  function sendMessage(text) {
+  async function sendMessage(text) {
     if (!text.trim() || isTyping) return;
-    addMessage(text.trim(), true);
+    const trimmed = text.trim();
+    addMessage(trimmed, true);
     msgInput.value = '';
     msgInput.style.height = '';
     sendBtn.disabled = true;
@@ -535,17 +508,23 @@
 
     showTyping();
 
-    const delay = 900 + Math.random() * 800;
-    setTimeout(() => {
+    try {
+      const reply = await sendToAI(trimmed);
       removeTyping();
-      addMessage(getReply(text.trim()), false);
+      addMessage(reply, false);
+    } catch (err) {
+      removeTyping();
+      addMessage(`⚠️ ${err.message || 'Something went wrong. Please try again.'}`, false);
+      console.error('OpenRouter error:', err);
+    } finally {
       isTyping = false;
-    }, delay);
+    }
   }
 
   function sendSuggestion(btn) {
     const map = { '👋 Say hello': 'Hello!', '💡 Give me a tip': 'Can you give me a tip?', '🎲 Random fact': 'Tell me a random fact!' };
-    sendMessage(map[btn.textContent] || btn.textContent);
+    const text = map[btn.textContent.trim()] || btn.textContent.trim();
+    sendMessage(text);
   }
 
   sendBtn.addEventListener('click', () => sendMessage(msgInput.value));
@@ -563,5 +542,7 @@
     }
   });
 </script>
+
+<script src="openrouter.js"></script>
 </body>
 </html>
