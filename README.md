@@ -2,6 +2,9 @@
 
 A modern, minimal AI-powered chatbot interface built with plain HTML, CSS, and JavaScript — no frameworks or build tools required. Powered by [OpenRouter](https://openrouter.ai/) using various free models.
 
+<img width="1377" height="910" alt="image" src="https://github.com/user-attachments/assets/a2ff4cb7-718a-41a3-bdf6-bf417d50ce68" />
+<img width="1333" height="887" alt="image" src="https://github.com/user-attachments/assets/ba7d94a9-01d7-435c-8dee-ed3d6a6fdf8a" />
+
 ---
 
 ## ✨ Features
