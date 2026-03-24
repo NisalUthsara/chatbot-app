@@ -1,4 +1,4 @@
-const OPENROUTER_API_KEY = "API_KEY"; // 🔑 Replace with your OpenRouter API key
+const OPENROUTER_API_KEY = "<YOUR_API_KEY>"; // 🔑 Replace with your OpenRouter API key
 const SITE_URL = "<YOUR_SITE_URL>";   // Optional
 const SITE_NAME = "Simple Chat Bot";  // Optional
 
